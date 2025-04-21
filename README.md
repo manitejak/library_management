@@ -39,6 +39,7 @@ Setup Instructions:
 
 1.Clone the repo
     git clone <https://github.com/manitejak/library_management.git>
+    
     cd lms_backend
 
 2.Create virtual environment
