@@ -8,4 +8,4 @@ venv/
 env/
 
 # Flask-Migrate/Flask-SQLAlchemy migrations
-migrations/
+# migrations/

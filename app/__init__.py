@@ -54,6 +54,16 @@ def create_app():
     api.add_namespace(auth_ns)
     api.add_namespace(borrow_ns)
 
+    with app.app_context():
+        from flask_migrate import upgrade
+        try:
+            upgrade()
+            print('database upgraded successfully')
+        except Exception as e:
+            print('upgrade failed:{e}')
+
+
+
 
     return app
 
