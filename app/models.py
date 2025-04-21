@@ -19,7 +19,7 @@ class User(db.Model):
     borrow_records = db.relationship('BookInventory', back_populates='user')
 
 
-    def __intit__(self,**kwargs):
+    def __init__(self,**kwargs):
         kwargs.setdefault('user_role','user')
         kwargs.setdefault('is_active',True)
         kwargs.setdefault('created_at',datetime.utcnow())

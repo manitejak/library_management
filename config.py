@@ -1,9 +1,10 @@
 import os
 
+
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL','postgresql://teja:teja@localhost/library')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS =  False
-    SECRET_KEY = 'HpbMJZuFcNmbT6utOWtUPKZw_fZbC-32TrG1GT4BY5g'
+    SECRET_KEY = os.getenv('SECRET_KEY')
     
 
 # import secrets
