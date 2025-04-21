@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+
+# Virtual environment
+venv/
+.env/
+.venv/
+env/
+
+# Flask-Migrate/Flask-SQLAlchemy migrations
+migrations/
