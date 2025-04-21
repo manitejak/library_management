@@ -1,7 +1,7 @@
 📋 Library Management System (LMS) – Flask REST API
 
 
-Its a flask based application in rest apis for managing books,users and borrow history with user access limited to librarian and users based on resgitration and login based. It also has JWT based authentication for accessing all the apis based on login and providing the bearer token in authorization.
+Its a flask based application in scalable rest api for managing books,users and borrow history with user access limited to librarian and users based on resgitration and login based and librarian has books management previlage but users can search books details. It also has JWT based authentication for accessing all the apis based on login and providing the bearer token in authorization for enhanced security functionality
 
 
 Features
@@ -112,7 +112,7 @@ Setup Instructions:
 
     Used JWT instead of API key system for better session management.
 
-    Designed modular structure (views, models, routes, utils) for clean separation of concerns.
+    Designed modular structure (views, models, urls, utils) for clean separation of concerns.
 
     Handled book availability and status at model level via custom logic.
 
