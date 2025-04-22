@@ -3,6 +3,17 @@ from app.models import Book,BookInventory
 from datetime import datetime,timedelta
 
 def book_borrow(user,book_id):
+    """Handle book borrowing process for a user.
+
+    Args:
+        user: The User instance borrowing the book
+        book_id: ID of the book to borrow
+
+    Returns:
+        tuple: (response dictionary, HTTP status code)
+            Success: Borrow confirmation with details (200)
+            Failure: Error message with appropriate status code (400/404)
+    """
     book = Book.query.get(book_id)
     print(book)
     if not book:
@@ -36,6 +47,17 @@ def book_borrow(user,book_id):
 
 
 def book_return(user,book_id):
+    """Handle book return process for a user.
+
+    Args:
+        user: The User instance returning the book
+        book_id: ID of the book being returned
+
+    Returns:
+        tuple: (response dictionary, HTTP status code)
+            Success: Return confirmation with details (200)
+            Failure: Error message with appropriate status code (404)
+    """
     data = BookInventory.query.filter_by(user_id=user.id,book_id=book_id,
                                           book_status = 'borrowed').first()
     
@@ -61,6 +83,14 @@ def book_return(user,book_id):
 
 
 def get_book_status(book):
+    """Determine the current status of a book based on availability.
+
+    Args:
+        book: The Book instance to check
+
+    Returns:
+        str: Status string ('available', 'partial_available', or 'borrowed')
+    """
     if book.books_available == 0:
         return 'borrowed'
     elif book.books_available < book.total_books:
@@ -70,6 +100,14 @@ def get_book_status(book):
 
 
 def get_borrow_history(user):
+    """Retrieve the borrowing history for a user.
+
+    Args:
+        user: The User instance whose history to fetch
+
+    Returns:
+        tuple: (list of history items, HTTP status code 200)
+    """
     borrow_history = BookInventory.query.filter_by(user_id=user.id).order_by(BookInventory.last_borrowed_date.desc()).all()
     
     borrow_data = [{

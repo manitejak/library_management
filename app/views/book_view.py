@@ -6,6 +6,19 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 def get_books(filters):
+    """Retrieve books based on filtering criteria.
+    
+    Args:
+        filters: Dictionary of filter parameters including:
+            - title: Partial title match (case-insensitive)
+            - author: Partial author match (case-insensitive)
+            - category: Exact category match
+            - book_summary: Partial summary match
+            - is_available: Boolean availability filter
+            
+    Returns:
+        List of Book objects matching the criteria
+    """
     data = Book.query
     if 'title' in filters:
         data = data.filter(Book.title.ilike(f'%{filters["title"]}%'))
@@ -27,6 +40,16 @@ def get_books(filters):
 
 
 def add_book(data):
+    """Add one or multiple books to the library.
+    
+    Args:
+        data: Either a single book dictionary or list of book dictionaries
+        
+    Returns:
+        tuple: (response dictionary, HTTP status code)
+            Success: Returns created book ID(s) with 201 status
+            Error: Returns error message with appropriate status code
+    """
     try:
         if isinstance(data,list):
             books = [Book(**book_data) for book_data in data]
@@ -55,6 +78,7 @@ def add_book(data):
 
 
 def update_book(book_id,data):
+    """Update an existing book's information."""
     book = Book.query.get(book_id)
     if not book:
         return {'messgae': 'Book not found'},404
@@ -64,6 +88,7 @@ def update_book(book_id,data):
     return book
 
 def delete_book(book_id):
+    """Permanently remove a book from the library."""
     book =  Book.query.get(book_id)
 
     if not book:

@@ -8,6 +8,23 @@ from app.utils.auth import encode_jwt
 
 
 def register_user(data):
+    """Register a new user in the system.
+    
+    Args:
+        data: Dictionary containing user registration data with keys:
+            - username: Unique username
+            - password: User password
+            - email_id: Valid email address
+            - user_role: Optional role (defaults to 'user')
+    
+    Returns:
+        tuple: (response dictionary, HTTP status code)
+            Success: {'Message': 'Registration Successful'}, 201
+            Error: Error message with appropriate status code
+    
+    Raises:
+        SQLAlchemyError: If database operation fails
+    """
     try:
         username = data.get('username')
         password = data.get('password')
@@ -34,6 +51,18 @@ def register_user(data):
     
 
 def login_user(data):
+    """Authenticate user and generate JWT token.
+    
+    Args:
+        data: Dictionary containing login credentials with keys:
+            - username: User's username
+            - password: User's password
+    
+    Returns:
+        tuple: (response dictionary, HTTP status code)
+            Success: Returns JWT token and user details, 200
+            Error: Error message with appropriate status code
+    """
     username = data.get('username')
     password = data.get('password')
 
