@@ -3,8 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restx import Api
 from config import Config
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+import os
 from flask_swagger_ui import get_swaggerui_blueprint
 
 db = SQLAlchemy()
@@ -29,23 +28,14 @@ api = Api(
     security='Bearer Token'
 )
 
-limiter = Limiter(
-        app=None,
-        key_func=get_remote_address,
-        default_limits=["200 per day","50 per hour"]
-    )
-    
-
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-
     db.init_app(app)
     migrate.init_app(app,db)
     api.init_app(app)
-    limiter.init_app(app)
     
     SWAGGER_URL = '/swagger'
     API_URL = '/swagger.json'
@@ -68,12 +58,21 @@ def create_app():
     from app.urls.book_url import book_ns
     from app.urls.auth_url import auth_ns
     from app.urls.borrow_url import borrow_ns
-    from app.urls.db_admin_url import db_admin_ns
     api.add_namespace(book_ns)
     api.add_namespace(auth_ns)
     api.add_namespace(borrow_ns)
-    api.add_namespace(db_admin_ns)
 
-    
+    with app.app_context():
+        try:
+            from flask_migrate import upgrade
+            db.create_all()
+            upgrade()
+            print('database upgraded successfully')
+        except Exception as e:
+            print('upgrade failed:',{e})
+
+
+
+
     return app
 
