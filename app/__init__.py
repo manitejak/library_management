@@ -3,8 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restx import Api
 from config import Config
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 
 db = SQLAlchemy()
 from app.models import *
@@ -28,12 +26,6 @@ api = Api(
     security='Bearer Token'
 )
 
-limiter = Limiter(
-        app=None,
-        key_func=get_remote_address,
-        default_limits=["200 per day","50 per hour"],
-        storage_uri=Config.RATELIMIT_STORAGE_URI
-    )
     
 
 
@@ -45,7 +37,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app,db)
     api.init_app(app)
-    limiter.init_app(app)
     
 
     from app.urls.book_url import book_ns
