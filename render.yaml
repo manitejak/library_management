@@ -6,6 +6,6 @@ services:
     startCommand: gunicorn run:app
     envVars:
       - key: DATABASE_URL
-        value: postgresql://library_admin:75OlfQRUHrhASu5q6EbSbJQopHw4BcMg@dpg-d03eu72li9vc73fjqdfg-a.oregon-postgres.render.com/library_prod_o2kp
+        value: postgresql://library_admin:l3dbEAlQWwJpR48r79kbsrxciy7f0rks@dpg-d03g3g2li9vc73fko6pg-a/library_prod_ilx5
       - key: SECRET_KEY
         value: HpbMJZuFcNmbT6utOWtUPKZw_fZbC-32TrG1GT4BY5g
