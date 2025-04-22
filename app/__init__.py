@@ -31,7 +31,8 @@ api = Api(
 limiter = Limiter(
         app=None,
         key_func=get_remote_address,
-        default_limits=["200 per day","50 per hour"]
+        default_limits=["200 per day","50 per hour"],
+        storage_uri=Config.RATELIMIT_STORAGE_URI
     )
     
 
@@ -55,12 +56,13 @@ def create_app():
     api.add_namespace(borrow_ns)
 
     with app.app_context():
-        from flask_migrate import upgrade
         try:
+            from flask_migrate import upgrade
+            db.create_all()
             upgrade()
             print('database upgraded successfully')
         except Exception as e:
-            print('upgrade failed:{e}')
+            print('upgrade failed:',{e})
 
 
 
