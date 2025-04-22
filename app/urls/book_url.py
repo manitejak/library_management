@@ -38,7 +38,7 @@ class BookList(Resource):
         """get all books based on the arguments with multiple search filters"""
         return get_books(request.args)
 
-    @limiter.limit("5 per minute")
+    @limiter.limit("30 per minute")
     @book_ns.doc('create_book_or_books')
     @book_ns.expect([book_model])
     @book_ns.response(201,'Success')
@@ -88,7 +88,7 @@ class BookResource(Resource):
             book_ns.abort(404,'No book found')
         return book
     
-    @limiter.limit("10 per minute")
+    @limiter.limit("30 per minute")
     @book_ns.doc('update_book')
     @book_ns.expect(book_model)
     @book_ns.marshal_with(book_model)
@@ -99,7 +99,7 @@ class BookResource(Resource):
         return update_book(book_id,request.json)
 
 
-    @limiter.limit("10 per minute")
+    @limiter.limit("30 per minute")
     @book_ns.doc('delete_book')
     @book_ns.response(204,'book deleted')
     @login

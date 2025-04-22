@@ -21,7 +21,7 @@ login_model = auth_ns.model('Login',{
 
 @auth_ns.route('/register')
 class Register(Resource):
-    @limiter.limit("3 per minute",error_message="too many registration attemps")
+    @limiter.limit("30 per minute",error_message="too many registration attemps")
     @auth_ns.expect(registation_model)
     def post(self):
         return register_user(request.json)
@@ -29,7 +29,7 @@ class Register(Resource):
 
 @auth_ns.route('/login')
 class Login(Resource):
-    @limiter.limit('5 per minute',error_message='too many login attempts')
+    @limiter.limit('30 per minute',error_message='too many login attempts')
     @auth_ns.expect(login_model)
     def post(self):
         return login_user(request.json)
