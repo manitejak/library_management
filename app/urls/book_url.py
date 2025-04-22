@@ -2,6 +2,7 @@ from flask import Blueprint,request
 from flask_restx import Namespace,Resource,fields
 from app.views.book_view import *
 from app.utils.role_access import *
+from app import limiter
 
 book_ns = Namespace('books', description= 'Books based CRUD')
 book_model = book_ns.model('Book', {
@@ -25,6 +26,7 @@ book_list_model = book_ns.model('BookList', {
 
 @book_ns.route('/')
 class BookList(Resource):
+    @limiter.limit("30 per minute")
     @book_ns.doc('Book_data')
     @book_ns.param('title',description='search by title with partial match')
     @book_ns.param('author',description='search by author with partial match')
@@ -36,6 +38,7 @@ class BookList(Resource):
         """get all books based on the arguments with multiple search filters"""
         return get_books(request.args)
 
+    @limiter.limit("5 per minute")
     @book_ns.doc('create_book_or_books')
     @book_ns.expect([book_model])
     @book_ns.response(201,'Success')
@@ -75,6 +78,7 @@ class BookList(Resource):
 @book_ns.response(404,'No book found')
 @book_ns.param('id')
 class BookResource(Resource):
+    @limiter.limit("30 per minute")
     @book_ns.doc('get_book')
     @book_ns.marshal_with(book_model)
     def get(self,book_id):
@@ -84,6 +88,7 @@ class BookResource(Resource):
             book_ns.abort(404,'No book found')
         return book
     
+    @limiter.limit("10 per minute")
     @book_ns.doc('update_book')
     @book_ns.expect(book_model)
     @book_ns.marshal_with(book_model)
@@ -94,6 +99,7 @@ class BookResource(Resource):
         return update_book(book_id,request.json)
 
 
+    @limiter.limit("10 per minute")
     @book_ns.doc('delete_book')
     @book_ns.response(204,'book deleted')
     @login
