@@ -1,9 +1,8 @@
-from flask import Flask,jsonify
+from flask import Flask,jsonify,redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restx import Api
 from config import Config
-import os
 from flask_swagger_ui import get_swaggerui_blueprint
 
 db = SQLAlchemy()
@@ -71,8 +70,9 @@ def create_app():
         except Exception as e:
             print('upgrade failed:',{e})
 
-
-
+    @app.route('/')
+    def index():
+        return redirect('/swagger')
 
     return app
 
